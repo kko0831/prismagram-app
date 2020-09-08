@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
 
@@ -20,7 +19,7 @@ const LoginLink = styled.View``;
 
 const LoginLinkText = styled.Text`
   color: ${(props) => props.theme.blueColor};
-  margin-top: 20px;
+  margin-top: 25px;
   font-weight: 600;
 `;
 
