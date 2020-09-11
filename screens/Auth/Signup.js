@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
-import { Facebook } from "expo";
+import * as Facebook from "expo-facebook";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
@@ -77,17 +77,22 @@ export default ({ navigation }) => {
   };
   const fbLogin = async () => {
     try {
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-        "594162471510048",
-        {
-          permissions: ["public_profile"],
-        }
-      );
+      setLoading(true);
+      await Facebook.initializeAsync("1018517341936541");
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile", "email"],
+      });
       if (type === "success") {
         const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
         );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        const { email, first_name, last_name } = await response.json();
+        emailInput.setValue(email);
+        fNameInput.setValue(first_name);
+        lNameInput.setValue(last_name);
+        const [username] = email.split("@");
+        usernameInput.setValue(username);
+        setLoading(false);
       } else {
         // type === 'cancel'
       }
@@ -125,7 +130,7 @@ export default ({ navigation }) => {
         <FBContainer>
           <AuthButton
             bgColor={"#2D4DA7"}
-            loading={false}
+            loading={loading}
             onPress={fbLogin}
             text="Connect Facebook"
           />
