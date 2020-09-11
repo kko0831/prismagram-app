@@ -11,3 +11,13 @@ Screens:
 - [ ] Photo Detail
 - [ ] Photo Comments (Challenge)
 - [ ] Photo Likes (Challenge)
+
+app.json
+"sdkVersion": "36.0.0"
+
+package.json
+"expo": "~36.0.0",
+"react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz"
+
+apollo.js
+uri: "http://ip주소:4000",
