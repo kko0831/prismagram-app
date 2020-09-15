@@ -13,6 +13,7 @@ web-report/
 package-lock.json
 yarn.lock
 .idea
+.log
 
 # macOS
 .DS_Store
