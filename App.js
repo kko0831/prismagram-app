@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
@@ -32,6 +31,12 @@ export default function App() {
       });
       const client = new ApolloClient({
         cache,
+        request: async (operation) => {
+          const token = await AsyncStorage.getItem("jwt");
+          return operation.setContext({
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        },
         ...apolloClientOptions,
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
