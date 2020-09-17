@@ -7,30 +7,53 @@ import Swiper from "react-native-swiper";
 import constants from "../constants";
 
 const Container = styled.View``;
+
 const Header = styled.View`
   padding: 15px;
   flex-direction: row;
   align-items: center;
 `;
 const Touchable = styled.TouchableOpacity``;
+
 const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
+
 const Bold = styled.Text`
-  font-weight: 500;
+  font-weight: bold;
 `;
+
 const Location = styled.Text`
   font-size: 12px;
 `;
+
 const IconsContainer = styled.View`
-  padding: 10px;
   flex-direction: row;
+  margin-bottom: 5px;
 `;
 const IconContainer = styled.View`
   margin-right: 10px;
 `;
 
-const Post = ({ user, location, files = [] }) => {
+const InfoContainer = styled.View`
+  padding: 10px;
+`;
+const Caption = styled.Text`
+  margin: 3px 0px;
+`;
+const CommentCount = styled.Text`
+  opacity: 0.5;
+  font-size: 13px;
+`;
+
+const Post = ({
+  user,
+  location,
+  files = [],
+  likeCount,
+  caption,
+  comments = [],
+}) => {
   return (
     <Container>
       <Header>
@@ -49,6 +72,8 @@ const Post = ({ user, location, files = [] }) => {
       </Header>
       <Swiper
         showsPagination={false}
+        paginationStyle={{ bottom: -20 }}
+        activeDotColor="black"
         style={{ height: constants.height / 2.5 }}
       >
         {files.map((file) => (
@@ -59,28 +84,37 @@ const Post = ({ user, location, files = [] }) => {
           />
         ))}
       </Swiper>
-      <IconsContainer>
+      <InfoContainer>
+        <IconsContainer>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                size={28}
+                name={
+                  Platform.OS === "ios" ? "ios-heart-empty" : "md-heart-empty"
+                }
+              />
+            </IconContainer>
+          </Touchable>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                size={28}
+                name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+              />
+            </IconContainer>
+          </Touchable>
+        </IconsContainer>
         <Touchable>
-          <IconContainer>
-            <Ionicons
-              size={28}
-              name={
-                Platform.OS === "ios" ? "ios-heart-empty" : "md-heart-empty"
-              }
-            />
-          </IconContainer>
+          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
         </Touchable>
+        <Caption>
+          <Bold>{user.username}</Bold> {caption}
+        </Caption>
         <Touchable>
-          <IconContainer>
-            <Ionicons
-              size={28}
-              name={
-                Platform.OS === "ios" ? "ios-message-empty" : "md-message-empty"
-              }
-            />
-          </IconContainer>
+          <CommentCount>See all {comments.length} comments</CommentCount>
         </Touchable>
-      </IconsContainer>
+      </InfoContainer>
     </Container>
   );
 };
