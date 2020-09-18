@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
@@ -18,6 +19,10 @@ export const SEARCH = gql`
       commentCount
     }
   }
+`;
+
+const Container = styled.View`
+  flex-direction: row;
 `;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
@@ -44,13 +49,15 @@ const SearchPresenter = ({ term, shouldFetch }) => {
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        data &&
-        data.searchPost &&
-        data.searchPost.map((post) => <SquarePhoto key={post.id} {...post} />)
-      )}
+      <Container>
+        {loading ? (
+          <Loader />
+        ) : (
+          data &&
+          data.searchPost &&
+          data.searchPost.map((post) => <SquarePhoto key={post.id} {...post} />)
+        )}
+      </Container>
     </ScrollView>
   );
 };
