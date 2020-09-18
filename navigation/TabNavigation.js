@@ -102,8 +102,8 @@ export default createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: "Search",
     tabBarOptions: {
+      initialRouteName: "Search",
       showLabel: false,
       style: {
         backgroundColor: "#FAFAFA",
