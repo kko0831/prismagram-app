@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, TouchableOpacity, Platform } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +8,8 @@ import theme from "../theme";
 import constants from "../constants";
 import Button from "./Button";
 import FollowButton from "./FollowButton";
+import SquarePhoto from "./SquarePhoto";
+import Post from "./Post";
 
 // 프로필 Header
 const ProfileHeader = styled.View`
@@ -49,6 +51,8 @@ const ProfileButton = styled.View``;
 
 // 프로필 footer
 const MenuContainer = styled.View`
+  padding-vertical: 5px;
+  border: 1px solid ${theme.lightGreyColor};
   flex-direction: row;
   margin-top: 30px;
 `;
@@ -56,6 +60,11 @@ const MenuContainer = styled.View`
 const Menu = styled.View`
   width: ${constants.width / 2};
   align-items: center;
+`;
+
+const PhotoContainer = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const UserProfile = ({
@@ -69,8 +78,11 @@ const UserProfile = ({
   isFollowing,
   isSelf,
   fullName,
+  posts,
 }) => {
   const logOut = useLogOut();
+  const [isGrid, setIsGrid] = useState(true);
+  const toggleGrid = () => setIsGrid((i) => !i);
   return (
     <View>
       <ProfileHeader>
@@ -111,23 +123,30 @@ const UserProfile = ({
         <Bio>{bio}</Bio>
       </ProfileMeta>
       <MenuContainer>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={toggleGrid}>
           <Menu>
             <Ionicons
+              color={isGrid ? theme.black : theme.darkGreyColor}
               size={32}
               name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
             />
           </Menu>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={toggleGrid}>
           <Menu>
             <Ionicons
+              color={!isGrid ? theme.black : theme.darkGreyColor}
               size={32}
               name={Platform.OS === "ios" ? "ios-list" : "md-list"}
             />
           </Menu>
         </TouchableOpacity>
       </MenuContainer>
+      <PhotoContainer>
+        {posts &&
+          posts.map((p) => (isGrid ? <SquarePhoto key={p.id} {...p} /> : null))}
+      </PhotoContainer>
+      {posts && posts.map((p) => (isGrid ? null : <Post key={p.id} {...p} />))}
     </View>
   );
 };
