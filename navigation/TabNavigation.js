@@ -11,6 +11,7 @@ import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import { stackStyles } from "./config";
 import theme from "../theme";
+import UserDetail from "../screens/UserDetail";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -25,6 +26,12 @@ const stackFactory = (initialRoute, customConfig) =>
         screen: Detail,
         navigationOptions: {
           title: "Photo",
+        },
+      },
+      UserDetail: {
+        screen: UserDetail,
+        navigationOptions: {
+          title: "User",
         },
       },
     },
