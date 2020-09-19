@@ -10,9 +10,19 @@ import theme from "../theme";
 import { useMutation } from "@apollo/react-hooks";
 import { withNavigation } from "react-navigation";
 
-export const TOGGLE_LIKE = gql`
+const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
     toggleLike(postId: $postId)
+  }
+`;
+
+const LIKE_COUNT = gql`
+  query seeFullPost($id: String!) {
+    seeFullPost(id: $id) {
+      id
+      isLiked
+      likeCount
+    }
   }
 `;
 
@@ -71,10 +81,12 @@ const Post = ({
 }) => {
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
-  const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
     variables: {
       postId: id,
     },
+    refetchQueries: [{ query: LIKE_COUNT, variables: { id } }],
+    awaitRefetchQueries: true,
   });
   const handleLike = async () => {
     if (isLiked === true) {

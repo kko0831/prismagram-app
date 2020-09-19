@@ -3,8 +3,11 @@ import { Image, View, TouchableOpacity, Platform } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
+import { useLogOut } from "../AuthContext";
 import theme from "../theme";
 import constants from "../constants";
+import Button from "./Button";
+import FollowButton from "./FollowButton";
 
 // 프로필 Header
 const ProfileHeader = styled.View`
@@ -34,7 +37,7 @@ const StatName = styled.Text`
   color: ${theme.darkGreyColor};
 `;
 
-// 프로필 fullName
+// 프로필 fullName + Button
 const ProfileMeta = styled.View`
   margin-top: 10px;
   padding-horizontal: 20px;
@@ -42,25 +45,32 @@ const ProfileMeta = styled.View`
 
 const Bio = styled.Text``;
 
+const ProfileButton = styled.View``;
+
 // 프로필 footer
-const ButtonContainer = styled.View`
+const MenuContainer = styled.View`
   flex-direction: row;
   margin-top: 30px;
 `;
 
-const Button = styled.View`
+const Menu = styled.View`
   width: ${constants.width / 2};
   align-items: center;
 `;
 
 const UserProfile = ({
+  id,
+  username,
   avatar,
   postsCount,
   followersCount,
   followingCount,
   bio,
+  isFollowing,
+  isSelf,
   fullName,
 }) => {
+  const logOut = useLogOut();
   return (
     <View>
       <ProfileHeader>
@@ -87,26 +97,37 @@ const UserProfile = ({
       </ProfileHeader>
       <ProfileMeta>
         <Bold>{fullName}</Bold>
+        <ProfileButton>
+          {isSelf ? (
+            <Button text="로그아웃" onPress={logOut} />
+          ) : (
+            <FollowButton
+              isFollowing={isFollowing}
+              id={id}
+              username={username}
+            />
+          )}
+        </ProfileButton>
         <Bio>{bio}</Bio>
       </ProfileMeta>
-      <ButtonContainer>
+      <MenuContainer>
         <TouchableOpacity>
-          <Button>
+          <Menu>
             <Ionicons
               size={32}
               name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
             />
-          </Button>
+          </Menu>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Button>
+          <Menu>
             <Ionicons
               size={32}
               name={Platform.OS === "ios" ? "ios-list" : "md-list"}
             />
-          </Button>
+          </Menu>
         </TouchableOpacity>
-      </ButtonContainer>
+      </MenuContainer>
     </View>
   );
 };
