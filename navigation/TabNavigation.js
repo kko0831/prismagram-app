@@ -30,9 +30,9 @@ const stackFactory = (initialRoute, customConfig) =>
       },
       UserDetail: {
         screen: UserDetail,
-        navigationOptions: {
-          title: "User",
-        },
+        navigationOptions: ({ navigation }) => ({
+          title: navigation.getParam("username"),
+        }),
       },
     },
     {
