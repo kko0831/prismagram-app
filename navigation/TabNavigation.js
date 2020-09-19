@@ -121,7 +121,7 @@ export default createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      initialRouteName: "Search",
+      initialRouteName: "Profile",
       showLabel: false,
       style: {
         backgroundColor: "#FAFAFA",
