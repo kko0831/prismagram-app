@@ -12,6 +12,9 @@ Screens:
 - [ ] Photo Comments (Challenge)
 - [ ] Photo Likes (Challenge)
 
+- Back-End 보러가기 => [URL](https://github.com/KyungOhKim/prismagram)
+- Front-End 보러가기 => [URL](https://github.com/KyungOhKim/prismagram-frontend)
+
 app.json
 "sdkVersion": "36.0.0"
 
