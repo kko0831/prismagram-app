@@ -39,7 +39,7 @@ export default () => {
       }
     } catch (e) {
       console.log(e);
-      hasPermission(false);
+      setHasPermission(false);
     }
   };
   useEffect(() => {
