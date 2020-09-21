@@ -48,13 +48,19 @@ export default createStackNavigator(
         title: "Choose Photo",
       },
     },
-    UploadPhoto,
+    Upload: {
+      screen: UploadPhoto,
+      navigationOptions: {
+        title: "Upload",
+      },
+    },
   },
   {
     defaultNavigationOptions: {
       headerStyle: {
         ...stackStyles,
       },
+      headerTintColor: theme.blackColor,
     },
   }
 );

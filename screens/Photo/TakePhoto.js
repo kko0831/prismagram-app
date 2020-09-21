@@ -24,7 +24,7 @@ const Button = styled.View`
   border: 10px solid ${theme.lightGreyColor};
 `;
 
-export default () => {
+export default ({ navigation }) => {
   const cameraRef = useRef();
   const [canTakePhoto, setCanTakePhoto] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -40,8 +40,8 @@ export default () => {
         quality: 1,
       });
       const asset = await MediaLibrary.createAssetAsync(uri);
-      console.log(asset);
       setCanTakePhoto(true);
+      navigation.navigate("Upload", { photo: asset });
     } catch (e) {
       console.log(e);
       setCanTakePhoto(true);
