@@ -25,7 +25,7 @@ const Button = styled.TouchableOpacity`
 
 const Text = styled.Text`
   color: white;
-  font-weight: 600;
+  font-weight: bold;
 `;
 
 export default ({ navigation }) => {
