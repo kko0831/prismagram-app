@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Image, ActivityIndicator, Alert } from "react-native";
 import styled from "styled-components";
 import useInput from "../../hooks/useInput";
@@ -39,18 +40,45 @@ const Text = styled.Text`
 
 export default ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const photo = navigation.getParam("photo");
   const captionInput = useInput("");
   const locationInput = useInput("");
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
+    } else {
+      const formData = new FormData();
+      formData.append("file", {
+        name: photo.filename,
+        type: "image/jpeg",
+        uri: photo.uri,
+      });
+      try {
+        setLoading(true);
+        const {
+          data: { path },
+        } = await axios.post(
+          "http://192.168.35.215:4000/api/upload",
+          formData,
+          {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+        Alert.alert("Cant upload", "Try later");
+      } finally {
+        setLoading(false);
+      }
     }
   };
   return (
     <View>
       <Container>
         <Image
-          source={{ uri: navigation.getParam("photo").uri }}
+          source={{ uri: photo.uri }}
           style={{ height: 80, width: 80, marginRight: 20 }}
         />
         <Form>
