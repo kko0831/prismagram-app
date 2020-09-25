@@ -2,9 +2,22 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Image, ActivityIndicator, Alert } from "react-native";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 import useInput from "../../hooks/useInput";
 import theme from "../../theme";
 import constants from "../../constants";
+import { useMutation } from "@apollo/react-hooks";
+import { FEED_QUERY } from "../Tabs/Home";
+
+const UPLOAD = gql`
+  mutation upload($caption: String!, $files: [String!]!, $location: String) {
+    upload(caption: $caption, files: $files, location: $location) {
+      id
+      caption
+      location
+    }
+  }
+`;
 
 const View = styled.View`
   flex: 1;
@@ -43,6 +56,9 @@ export default ({ navigation }) => {
   const photo = navigation.getParam("photo");
   const captionInput = useInput("");
   const locationInput = useInput("");
+  const [uploadMutation] = useMutation(UPLOAD, {
+    refetchQueries: () => [{ query: FEED_QUERY }],
+  });
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
@@ -66,6 +82,18 @@ export default ({ navigation }) => {
             },
           }
         );
+        const {
+          data: { upload },
+        } = await uploadMutation({
+          variables: {
+            files: [location],
+            caption: captionInput.value,
+            location: locationInput.value,
+          },
+        });
+        if (upload.id) {
+          navigation.navigate("Home");
+        }
       } catch (e) {
         console.log(e);
         Alert.alert("Cant upload", "Try later");

@@ -128,7 +128,6 @@ export default createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      initialRouteName: "Profile",
       showLabel: false,
       style: {
         backgroundColor: "#FAFAFA",
