@@ -56,7 +56,7 @@ export default ({ navigation }) => {
       try {
         setLoading(true);
         const {
-          data: { path },
+          data: { location },
         } = await axios.post(
           "http://192.168.35.215:4000/api/upload",
           formData,
